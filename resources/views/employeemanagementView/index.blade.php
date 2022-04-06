@@ -29,10 +29,22 @@
             <div class="card">
               <div class="card-header">
              
-                  <h3 class="card-title">Total Employees ( {{ $employees->total() }}) </h3>
+                   <h3 class="card-title">Total Employees ( {{ $employees->total() }}) </h3>
+
                    <a href="{{ route('employee.employeemanagement.create') }}" class="btn btn-info btn-sm float-right">Add employee</a>
                   
-                
+                   <form class="form-inline pull-right" method="GET">
+                     <div class="form-group">
+                            <div class="input-group input-group-sm">
+                                <input type="search" class="form-control" placeholder="search" value="" name="search" id="search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                 </form>
               </div>
               
               <!-- /.card-header -->
@@ -66,6 +78,7 @@
                     <td> {{ $emp->emailid}}</td>
                     <td>{{ $emp->designation}}</td>
                     <td><a href="{{route('employee.employeemanagement.edit',$emp->id)}}" class="btn btn-block bg-gradient-primary btn-sm">Edit</a></td>
+
                     <td>  
 
                       <form  method="post" action="{{ route('employee.employeemanagement.destroy',$emp->id)}}">
@@ -74,7 +87,7 @@
                         <input type="submit" class="btn btn-danger btn-sm" value="Delete user">
                       </form>
                     
-                  </td>
+                    </td>
                   </tr>
                   @endforeach
                   @else
@@ -103,3 +116,28 @@
     <!-- /.content -->
   </div>
 @endsection
+
+@section('scripts')
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+$('#search').on('keyup',function(){
+  
+  $value =$(this).val();
+  $.ajax({
+  url : "{{ route('employee.employeemanagement.index') }}",
+  type : 'get',
+  data: {'search':$value},
+    success:function(data){
+      //console.log(data);
+          $('tbody').html(data);
+    }
+  });
+ })
+})
+</script>
+<script type="text/javascript">
+   $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+</script>
+@stop

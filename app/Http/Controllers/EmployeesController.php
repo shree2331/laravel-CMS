@@ -12,10 +12,36 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $output='';
+         if($request->ajax()){
+            $query=$request->get('search');
+            $employees = Employees::where('name','like','%'.$query.'%')->get();
+         foreach($employees as $emp){
+             $output.='
+             <tr>
+             <td>'.$emp->id.'</td>
+             <td>'.$emp->employeeid.'</td>
+             <td>'.$emp->name.'</td>
+             <td>'.$emp->emailid.'</td>
+             <td>'.$emp->designation.'</td>
+             <td><a href="{{route("employee.employeemanagement.edit",'.$emp->id.')}}" class="btn btn-block bg-gradient-primary btn-sm">Edit</a></td>
 
-        $arr['employees']=Employees::paginate(3);
+             <td>
+
+               <form  method="post" action="{{route(employee.employeemanagement.destroy,$emp->id)}}">
+                 <input type="submit" class="btn btn-danger btn-sm" value="Delete user">
+               </form>
+             
+             </td></tr>';
+
+             return response($output);
+         }
+        }else{
+            $arr['employees']=Employees::paginate(3);
+
+        }
         return view('employeemanagementView.index')->with($arr);
     }
 
@@ -62,10 +88,8 @@ class EmployeesController extends Controller
           
          if($employeesdata->save()){
         
-            return redirect()->route('employee.employeemanagement.index')->with('status', 'An employee has been added to List');
+            return redirect()->route('leaverecords.employeemanagement.index')->with('status', 'An employee has been added to List');
 
-         }else{
-             echo "here";
          }
         
     }
@@ -78,7 +102,7 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        //
+       //
     }
 
     /**
