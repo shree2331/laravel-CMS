@@ -14,11 +14,11 @@ class EmployeesController extends Controller
      */
     public function index(Request $request)
     {
-        $output='';
+      
          if($request->ajax()){
             $query=$request->get('search');
             $employees = Employees::where('name','like','%'.$query.'%')->get();
-         foreach($employees as $emp){
+         /*foreach($employees as $emp){
              $output.='
              <tr>
              <td>'.$emp->id.'</td>
@@ -30,14 +30,15 @@ class EmployeesController extends Controller
 
              <td>
 
-               <form  method="post" action="{{route(employee.employeemanagement.destroy,$emp->id)}}">
+               <form  method="post" action="/admin/employeemanagement/delete/'.$emp->id.'">
                  <input type="submit" class="btn btn-danger btn-sm" value="Delete user">
                </form>
              
              </td></tr>';
 
-             return response($output);
-         }
+           
+         }*/
+         return response($employees);
         }else{
             $arr['employees']=Employees::paginate(3);
 
@@ -155,6 +156,8 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
+
+       
         Employees :: destroy($id);
         return redirect()->route('employee.employeemanagement.index');
 

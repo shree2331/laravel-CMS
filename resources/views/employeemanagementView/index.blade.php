@@ -130,9 +130,25 @@ $('#search').on('keyup',function(){
   type : 'get',
   data: {'search':$value},
     success:function(data){
-      //console.log(data);
-          $('tbody').html(data);
-    }
+      console.log(data);
+            var res='';
+            $.each (data, function (key, value) {
+            res +=
+            '<tr>'+
+                '<td>'+value.name+'</td>'+
+                '<td>'+value.age+'</td>'+
+                '<td><a href="{{route('employee.employeemanagement.edit',$emp->id)}}" class="btn btn-block bg-gradient-primary btn-sm">Edit</a></td>'+
+                '<td>'+
+                '<form method="delete" action="{{ route('employee.employeemanagement.destroy',$emp->id)}}">'+
+                '@csrf'+
+                '@method("DELETE")'+
+                '<input type="submit" class="btn btn-danger btn-sm" value="Delete user">'+
+                 '</form></td>'+
+           '</tr>';
+          });
+
+          $('tbody').html(res);
+            }
   });
  })
 })

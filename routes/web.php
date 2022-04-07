@@ -29,7 +29,9 @@ Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->nam
 //Route::get('/admin/employeemanagement', [EmployeesController::class,'seacrh'])->name('employee.seacrh');
 
 Route::resource('/admin/employeemanagement', EmployeesController::class,['as'=>'employee']);
-Route::resource('/admin/employeeleaverecords', EmployeeLeaveRecordsController::class,['as'=>'leaverecords']);
+
+Route::resource('/admin/employeeleaverecords', EmployeeLeaveRecordsController::class,
+['as'=>'leaverecords']);
 
 
 
